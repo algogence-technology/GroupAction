@@ -1,5 +1,6 @@
 package com.algogence.groupaction
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -39,6 +40,8 @@ import com.algogence.groupaction.ui.theme.GroupActionTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val p: Int by lazy { myFunction(1) }
+        Log.d("fjlfs","line no 43 executed")
         setContent {
             GroupActionTheme {
                 Surface(
@@ -48,6 +51,10 @@ class MainActivity : ComponentActivity() {
                     Column() {
                         Text("Vishal")
                         Button(onClick = {
+                            val map = mapOf("a" to 1, "b" to 2, "c" to 3)
+                            (1..10).forEach {
+                                Log.d("fjdjfdf","I am $it")
+                            }
 
                         }) {
                             Row() {
@@ -80,7 +87,8 @@ class MainActivity : ComponentActivity() {
                                     interactionSource = interactionSource,
                                     indication = null
                                 ) {
-                                    Log.d("lfjlfdslkf", "Clicked")
+
+                                    Log.d("fjlfs","p = $p")
                                 }
                                 .background(
                                     brush = Brush.horizontalGradient(
@@ -104,13 +112,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+fun myFunction(a: Int, b: Int = 5): Int{
+    Log.d("fjlfs","myFunction is called")
+    return a + b
+}
 /*
-* Containers
-*   1. Row: Side by side arrangement
-*   2. Column: Top to bottom arrangement
-*   3. Box: Stack arrangement
-*
-* dog.bark()
-* man.sleep()
-* you.go()
+* map is the short form of mapping
+* group-d employee-> 100 Coupon
+* Manager-> 1000 Coupon
+* key->value
 * */
