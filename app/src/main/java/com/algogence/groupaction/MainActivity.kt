@@ -1,124 +1,231 @@
 package com.algogence.groupaction
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.algogence.groupaction.ui.theme.GroupActionTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val p: Int by lazy { myFunction(1) }
-        Log.d("fjlfs","line no 43 executed")
         setContent {
             GroupActionTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column() {
-                        Text("Vishal")
-                        Button(onClick = {
-                            val map = mapOf("a" to 1, "b" to 2, "c" to 3)
-                            (1..10).forEach {
-                                Log.d("fjdjfdf","I am $it")
-                            }
-
-                        }) {
-                            Row() {
-                                Text("Vishal")
-                                Text(".")
-                                Text("Vishal1")
-                            }
-                        }
-                        val interactionSource = remember { MutableInteractionSource() }
-                        val isPressed by interactionSource.collectIsPressedAsState()
-                        val startColor by animateColorAsState(targetValue = if(isPressed) Color(0xffff0090) else  Color(0xfff200ff))
-                        val endColor by animateColorAsState(targetValue = if(isPressed) Color(0xfff200ff) else  Color(0xffff0090))
-                        val text by remember {
-                            derivedStateOf {
-                                if(isPressed)
-                                {
-                                    "pressed"
-                                }
-                                else{
-                                    "not pressed"
-                                }
-                            }
-                        }
+                    Box(
+                        modifier = Modifier
+                            .background(Color(0xff12171D))
+                    ){
+                        val mySize = remember{ mutableStateOf(IntSize(0,0)) }
                         Box(
                             modifier = Modifier
-                                .width(250.dp)
-                                .height(50.dp)
-                                .clip(RoundedCornerShape(15.dp))
-                                .clickable(
-                                    interactionSource = interactionSource,
-                                    indication = null
+                                .fillMaxWidth(1f)
+                                .aspectRatio(1f)
+                                .background(
+                                    brush = Brush.radialGradient(
+                                        colors = listOf(
+                                            Color(0xff28152C),
+                                            Color(0xff12171D)
+                                        ),
+                                        center = Offset.Zero,
+                                        radius = (mySize.value.width.toFloat()).coerceAtLeast(1f)
+                                    )
+                                )
+                                .onGloballyPositioned {
+                                    mySize.value = it.size
+                                }
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                ,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            EmailField()
+                            PasswordField()
+                            Text(
+                                "Forgot Password?",
+                                color = Color(0xff246BFE),
+                                modifier = Modifier
+                                    .align(Alignment.End)
+                                    .padding(end = 36.dp)
+                            )
+                            Button(
+                                modifier = Modifier
+                                    .width(170.dp)
+                                    .height(50.dp),
+                                onClick = {
+
+                                },
+                                shape = RoundedCornerShape(6.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xff246BFE)
+                                ),
+                            ) {
+                                Text(
+                                    "LOGIN",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
+                            }
+                            Box(
+                                contentAlignment = Alignment.TopCenter
+                            ){
+                                Box(
+                                    modifier = Modifier
+                                        .padding(top = 15.dp)
+                                        .fillMaxWidth()
+                                        .height(75.dp)
+                                        .background(Color(0xff181D24))
                                 ) {
 
-                                    Log.d("fjlfs","p = $p")
                                 }
-                                .background(
-                                    brush = Brush.horizontalGradient(
-                                        colors = listOf(
-                                            startColor,
-                                            endColor
-                                        )
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(0xff181D24))
+                                ) {
+
+                                }
+                            }
+                            Canvas(
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .background(Color.White),
+                                onDraw = {
+                                    drawLine(
+                                        Color.Red,Offset.Zero,
+                                        Offset(250f,250f),
+                                        strokeWidth = 15f
                                     )
-                                ),
-                            contentAlignment = Alignment.Center
-                        ){
-                            Text(
-                                text,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold
+                                    drawCircle(Color.Blue, radius = size.minDimension/4f)
+
+                                }
                             )
                         }
                     }
+
                 }
             }
         }
     }
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun EmailField() {
+        OutlinedTextField(
+            placeholder = {
+                Text("Hello world")
+            },
+            modifier = Modifier
+                .width(320.dp),
+            colors = TextFieldDefaults
+                .textFieldColors(
+                    containerColor = Color(0xff1A2027),
+                    textColor = Color.White,
+                    focusedIndicatorColor = Color(0xff2054BD),
+                    unfocusedIndicatorColor = Color.Transparent,
+                    placeholderColor = Color.Red
+                ),
+            value = "",
+            onValueChange = {},
+            textStyle = TextStyle(
+                fontWeight = FontWeight.Bold
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "",
+                    tint = Color(0xff246BFE)
+                )
+            }
+        )
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun PasswordField() {
+        OutlinedTextField(
+            modifier = Modifier
+                .width(320.dp),
+            colors = TextFieldDefaults
+                .textFieldColors(
+                    containerColor = Color(0xff1A2027),
+                    textColor = Color.White,
+                    focusedIndicatorColor = Color(0xff2054BD),
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+            value = "Hello",
+            onValueChange = {},
+            textStyle = TextStyle(
+                fontWeight = FontWeight.Bold
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Key,
+                    contentDescription = "",
+                    tint = Color(0xff246BFE),
+                    modifier = Modifier
+                        .rotate(225.0f)
+                )
+            }
+        )
+    }
 }
-fun myFunction(a: Int, b: Int = 5): Int{
-    Log.d("fjlfs","myFunction is called")
-    return a + b
-}
+
 /*
-* map is the short form of mapping
-* group-d employee-> 100 Coupon
-* Manager-> 1000 Coupon
-* key->value
+* chat application like mini whatsapp with firebase or agora library or socket
+* drawing app
+* Ecommerce app
+* Calculator
+* Fasebok
+* Todo app
 * */
